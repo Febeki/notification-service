@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: notification_service_django
+    build:
+      context: .
+      dockerfile: docker/dev/backend/Dockerfile
+    restart: on-failure:10
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/usr/src/backend
+    env_file:
+      - docker/dev/env/.backend.env
+      - docker/dev/env/.db.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - rabbitmq
+  celery:
+    build:
+      context: .
+      dockerfile: docker/dev/backend/Dockerfile
+    restart: on-failure:10
+    entrypoint: ""
+    command: celery -A backend worker --beat -l info
+    env_file:
+      - docker/dev/env/.backend.env
+      - docker/dev/env/.db.env
+    volumes:
+      - ./backend:/usr/src/backend
+    depends_on:
+      - rabbitmq
+  db:
+    image: "postgres:15.1-alpine"
+    restart: unless-stopped
+    env_file:
+      - docker/dev/env/.db.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/dev/frontend/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - docker/dev/env/.frontend.env
+    ports:
+      - "3000:3000"
+    command: npm start
+    volumes:
+      - ./frontend/public:/usr/src/frontend/public
+      - ./frontend/src:/usr/src/frontend/src
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  rabbitmq:

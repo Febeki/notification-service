@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/prod/backend/Dockerfile
+    restart: unless-stopped
+    command: gunicorn backend.wsgi:application
+    volumes:
+      - static:/backend/static
+      - media:/backend/media
+      - postgres_socket:/postgres_socket
+      - gunicorn_socket:/gunicorn_socket
+    env_file:
+      - docker/prod/env/.db.env
+      - docker/prod/env/.backend.env
+      - docker/prod/env/.gunicorn.env
+    expose:
+      - 8000
+    depends_on: [db, rabbitmq]
+  celery:
+    build:
+      context: .
+      dockerfile: docker/prod/backend/Dockerfile
+    restart: unless-stopped
+    entrypoint: ""
+    command: celery -A backend worker --beat -l info
+    volumes:
+      - postgres_socket:/postgres_socket
+    env_file:
+      - docker/prod/env/.backend.env
+      - docker/prod/env/.db.env
+    depends_on: [backend, db]
+  db:
+    image: postgres:15.1-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    env_file:
+      - docker/prod/env/.db.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_socket:/var/run/postgresql/
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/prod/frontend/Dockerfile
+    env_file:
+      - docker/prod/env/.frontend.env
+    volumes:
+      - react_build:/frontend/build
+    depends_on: [backend]
+  nginx:
+    image: staticfloat/nginx-certbot
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - media:/backend/media
+      - static:/backend/static
+      - gunicorn_socket:/gunicorn_socket
+      - react_build:/var/www/frontend
+      - letsencrypt:/etc/letsencrypt
+      - ./docker/prod/nginx/certbot.conf:/etc/nginx/user.conf.d/nginx_template.conf:ro
+      - ./docker/prod/nginx/conf.d/proxy.conf:/etc/nginx/user.conf.d/proxy.conf:ro
+    environment:
+      CERTBOT_EMAIL: YOUR_EMAIL
+      ENVSUBST_VARS: DOMAIN
+      DOMAIN: YOUR_DOMAIN_NAME
+
+
+volumes:
+  static:
+  media:
+  gunicorn_socket:
+  postgres_data:
+  postgres_socket:
+  react_build:
+  letsencrypt:
+  rabbitmq:
