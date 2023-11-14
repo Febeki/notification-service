@@ -1,0 +1,11 @@
+from main.models import Client
+
+
+
+for i in range(3):
+    Client.objects.create(phone_number=f'7{i:010}', mobile_operator_code=f'000', tag='Python',
+                          timezone='Europe/Moscow')
+
+for i in range(3, 6):
+    Client.objects.create(phone_number=f'7{i:010}', mobile_operator_code=f'000', tag='Python',
+                          timezone='Asia/Yekaterinburg')

@@ -1,0 +1,9 @@
+-r base.txt
+
+# Linters
+black==23.7
+flake8==6.1
+isort==5.12
+
+# Debug Toolbar
+django-debug-toolbar==4.0
