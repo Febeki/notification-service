@@ -50,7 +50,7 @@ class MailingSerializer(serializers.ModelSerializer):
         max_length=150,
         required=False,
         allow_blank=True,
-        validators=[RegexValidator(r'^\S+\s\S+$',
+        validators=[RegexValidator(r'^\S+\s\d{3}$',
                                    message="фильтр должен быть в формате: '{Тег} {Код оператора}' ")]
     )
 
