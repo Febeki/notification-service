@@ -22,6 +22,8 @@ Create 6 clients with different time zones for testing
 
 - `exec(open('setup_db.txt').read())` - populate the database
 
+- `exit()` - exit from console
+
 **Environment Configuration Examples**:
 
 `.backend.env`:

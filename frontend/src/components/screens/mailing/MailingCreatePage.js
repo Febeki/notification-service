@@ -54,7 +54,7 @@ const NewMailing = () => {
           {
             label: "Фильтр",
             name: "client_filter",
-            placeholder: "Тег Код",
+            placeholder: "Python 912",
           },
         ].map(({ label, name, placeholder }) => (
           <Form.Group key={name}>
