@@ -45,20 +45,6 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class MailingSerializer(serializers.ModelSerializer):
-    client_filter = serializers.CharField(
-        max_length=150,
-        required=False,
-        allow_blank=True,
-        validators=[RegexValidator(r'^\S+\s\d{3}$',
-                                   message="фильтр должен быть в формате: '{Тег} {Код оператора}' ")]
-    )
-
-    class Meta:
-        model = Mailing
-        fields = "__all__"
-
-
 class MessageSerializer(serializers.ModelSerializer):
     status = serializers.CharField(source='get_status_display')
     client = ClientSerializer()
@@ -68,7 +54,28 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class DetailMailingSerializer(serializers.ModelSerializer):
+class MailingSerializer(serializers.ModelSerializer):
+    client_filter = serializers.CharField(
+        max_length=150,
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+        validators=[RegexValidator(r'^\S+\s\d{3}$',
+                                   message="фильтр должен быть в формате: '{Тег} {Код оператора}' ")]
+    )
+
     class Meta:
         model = Mailing
-        fields = '__all__'
+        exclude = ('task_ids',)
+
+
+class MailingRetrieveSerializer(serializers.ModelSerializer):
+    messages = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Mailing
+        exclude = ('task_ids',)
+
+    def get_messages(self, obj):
+        messages = obj.message_set.all().select_related('client').order_by("status")
+        return MessageSerializer(messages, many=True).data

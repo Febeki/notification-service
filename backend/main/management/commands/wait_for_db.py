@@ -13,7 +13,7 @@ class Command(BaseCommand):
             try:
                 connection.ensure_connection()
                 db_conn = True
-            except OperationalError as e:
+            except OperationalError as e:  # pragma: no cover
                 self.stdout.write(f"Database unavailable, waiting 10 second... {e}")
                 sleep(10)
 

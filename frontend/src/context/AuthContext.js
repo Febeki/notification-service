@@ -26,8 +26,6 @@ export const AuthProvider = ({ children }) => {
 
   let loginUser = async (e) => {
     e.preventDefault();
-    console.log(e.target.username.value);
-    console.log(e.target.password.value);
     await axios
       .post(`${ROOT_API_URL}${URLs.TOKEN}`, {
         username: e.target.username.value,
@@ -40,8 +38,6 @@ export const AuthProvider = ({ children }) => {
         const decodedUser = jwtDecode(data.access);
         setUser(decodedUser);
         localStorage.setItem("authTokens", JSON.stringify(data));
-        console.log(decodedUser.is_staff);
-        console.log(decodedUser.username);
         if (decodedUser.is_staff) {
           navigate("/");
         }
