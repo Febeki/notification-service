@@ -14,7 +14,7 @@ const MailinginfoPage = () => {
 
   const getMailingDetails = async () => {
     try {
-      const response = await api.get(`${URLs.MAILING_DETAIL}${id}/`);
+      const response = await api.get(`${URLs.MAILING}${id}/`);
       if (response.status === 200) {
         setMailingData(response.data);
       }
