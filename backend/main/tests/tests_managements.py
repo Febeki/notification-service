@@ -13,5 +13,7 @@ class ManagementTest(TestCase):
     def test_create_superuser(self):
         out = StringIO()
         call_command('create_superuser', stdout=out)
-        ans = out.getvalue()
-        self.assertTrue(('Superuser created successfully' in ans) or ('Superuser already exists' in ans))
+        self.assertIn('Superuser created successfully', out.getvalue())
+
+        call_command('create_superuser', stdout=out)
+        self.assertIn('Superuser already exists', out.getvalue())

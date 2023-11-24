@@ -7,10 +7,8 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 
-from rest_framework_simplejwt.tokens import RefreshToken
-
 from main.models import Mailing, Client, Message
-from main.serializers import ClientSerializer, DetailMailingSerializer, MailingSerializer, MessageSerializer
+from main.serializers import ClientSerializer, MailingRetrieveSerializer, MailingSerializer, MessageSerializer
 
 User = get_user_model()
 
@@ -201,18 +199,19 @@ class MessageSerializerTest(TestCase):
         self.assertEqual(list(serializer.errors), ['client'])
 
 
-class DetailMailingSerializerTest(TestCase):
-    def test_detail_mailing_serializer(self):
+class MailingRetrieveSerializerTest(TestCase):
+    def test_mailing_retrieve_serializer(self):
         mailing = Mailing.objects.create(start_time="2023-01-01T00:00:00Z", end_time="2023-01-02T00:00:00Z",
                                          message_text="Test message")
 
-        serializer = DetailMailingSerializer(mailing)
+        serializer = MailingRetrieveSerializer(mailing)
         expected_data = {
             "id": mailing.id,
             "start_time": "2023-01-01T00:00:00Z",
             "end_time": "2023-01-02T00:00:00Z",
             "message_text": "Test message",
             "client_filter": None,
+            "messages": [],
         }
 
         self.assertEqual(serializer.data, expected_data)
