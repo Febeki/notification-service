@@ -1,7 +1,7 @@
 import jwt
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from rest_framework.test import APITestCase
 from rest_framework import status
@@ -11,8 +11,6 @@ from main.models import Mailing, Client, Message
 from main.serializers import ClientSerializer, MailingRetrieveSerializer, MailingSerializer, MessageSerializer
 
 User = get_user_model()
-
-server_tz = timezone.get_current_timezone()
 
 
 class ClientSerializerTest(TestCase):
@@ -152,6 +150,7 @@ class MailingSerializerTest(TestCase):
 
 
 class MessageSerializerTest(TestCase):
+    @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
     def setUp(self):
         self.client = Client.objects.create(
             phone_number="79991234567",
@@ -243,4 +242,3 @@ class MyTokenObtainPairSerializerTest(APITestCase):
         token_payload = response.data["access"]
         decoded_payload = jwt.decode(token_payload, algorithms=["HS256"], options={"verify_signature": False})
         self.assertIn("is_staff", decoded_payload)
-
