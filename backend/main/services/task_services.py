@@ -39,6 +39,5 @@ def send_message_and_set_status(message: Message) -> None:
             message.status = Message.DELIVERY_ERROR
     except requests.RequestException:
         message.status = Message.DELIVERY_ERROR
-    print(satus_code, "we are in send_message_and_set_status")
 
     message.save()

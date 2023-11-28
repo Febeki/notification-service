@@ -23,6 +23,7 @@ def create_celery_tasks_to_send_messages_to_clients(clients: QuerySet[Client], i
         if start_function_at:
             task = send_message_to_client.apply_async(args=[cl.pk, instance.pk], eta=start_function_at)
             task_ids.append(task.id)
+
     task_ids = ",".join(task_ids)
     return task_ids
 

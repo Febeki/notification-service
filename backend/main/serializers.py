@@ -17,8 +17,8 @@ class ClientSerializer(serializers.ModelSerializer):
     tag = serializers.CharField(
         max_length=100,
         validators=[RegexValidator(r'^[a-zA-Z]+\d*$',
-                                   message="Тег должен состоять из букв \
-                                   латинского алфавита без пробелов и специальных символов")]
+                                   message="Тег должен состоять из букв или букв и цифр в конце, \
+                                   без пробелов и специальных символов")]
     )
 
     def handle_integrity_error(self, exc):
