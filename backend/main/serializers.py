@@ -68,6 +68,12 @@ class MailingSerializer(serializers.ModelSerializer):
         model = Mailing
         exclude = ('task_ids',)
 
+    def validate(self, data):
+        """Check start time is lower than end time."""
+        if data['start_time'] >= data['end_time']:
+            raise serializers.ValidationError("start time must be lower than end time")
+        return data
+
 
 class MailingRetrieveSerializer(serializers.ModelSerializer):
     messages = serializers.SerializerMethodField()

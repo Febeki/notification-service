@@ -148,6 +148,16 @@ class MailingSerializerTest(TestCase):
         self.assertFalse(serializer.is_valid())
         self.assertEqual(list(serializer.errors), ['client_filter'])
 
+    def test_invalid_time_mailing_serializer(self):
+        data = {
+            "start_time": "2023-01-02T00:00:00Z",
+            "end_time": "2023-01-02T00:00:00Z",
+            "message_text": "Test message",
+        }
+        serializer = MailingSerializer(data=data)
+        self.assertFalse(serializer.is_valid())
+        self.assertEqual(list(serializer.errors), ['non_field_errors'])
+
 
 class MessageSerializerTest(TestCase):
     @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
