@@ -8,7 +8,7 @@ from main.utils import time_to_send_message
 
 class UtilsTestCase(TestCase):
     def setUp(self):
-        self.valid_timezone = "Europe/Moscow"
+        self.valid_timezone = "UTC"
         self.invalid_timezone = "Check/12345"
         self.server_tz = timezone.get_current_timezone()
 
@@ -24,8 +24,14 @@ class UtilsTestCase(TestCase):
         result = time_to_send_message(self.valid_timezone, start_time, end_time)
         self.assertIsNone(result)
 
-    def test_time_to_send_message_within_time_range(self):
+    def test_time_to_send_message_now(self):
         start_time = datetime.now(self.server_tz) - timedelta(hours=12)
         end_time = datetime.now(self.server_tz) + timedelta(hours=12)
+        result = time_to_send_message(self.valid_timezone, start_time, end_time)
+        self.assertIsNotNone(result)
+
+    def test_time_to_send_message_in_an_hour(self):
+        start_time = datetime.now(self.server_tz) + timedelta(hours=1)
+        end_time = datetime.now(self.server_tz) + timedelta(hours=2)
         result = time_to_send_message(self.valid_timezone, start_time, end_time)
         self.assertIsNotNone(result)

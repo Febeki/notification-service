@@ -2,7 +2,7 @@ import os
 
 import requests
 
-from main.models import Message, Client, Mailing
+from main.models import Client, Mailing, Message
 
 
 def _send_message_to_external_api(msg: dict) -> int:

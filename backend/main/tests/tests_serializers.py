@@ -1,13 +1,12 @@
 import jwt
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 from django.test import TestCase, override_settings
-
-from rest_framework.test import APITestCase
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.test import APITestCase
 
-from main.models import Mailing, Client, Message
+from main.models import Client, Mailing, Message
 from main.serializers import ClientSerializer, MailingRetrieveSerializer, MailingSerializer, MessageSerializer
 
 User = get_user_model()

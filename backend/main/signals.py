@@ -1,9 +1,12 @@
-from django.db.models.signals import pre_delete, pre_save, post_save
+from django.db.models.signals import post_save, pre_delete, pre_save
 from django.dispatch import receiver
+
 from .models import Mailing
-from main.services.model_services import (revoke_celery_tasks_by_ids,
-                       create_celery_tasks_to_send_messages_to_clients,
-                       get_clients_by_filter)
+from main.services.model_services import (
+    create_celery_tasks_to_send_messages_to_clients,
+    get_clients_by_filter,
+    revoke_celery_tasks_by_ids,
+)
 
 
 @receiver(pre_save, sender=Mailing)

@@ -4,9 +4,8 @@ from celery.result import AsyncResult
 from django.db.models import QuerySet
 
 from main.models import Client, Mailing
-from main.utils import time_to_send_message
-
 from main.tasks import send_message_to_client
+from main.utils import time_to_send_message
 
 
 def create_celery_tasks_to_send_messages_to_clients(clients: QuerySet[Client], instance: Mailing) -> str:

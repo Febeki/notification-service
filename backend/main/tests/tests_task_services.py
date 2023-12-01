@@ -1,9 +1,11 @@
+from unittest.mock import patch
+
+import requests
 from django.test import TestCase, override_settings
 from django.utils import timezone
-from unittest.mock import patch
-import requests
-from main.services.task_services import create_message, send_message_and_set_status
+
 from main.models import Client, Mailing, Message
+from main.services.task_services import create_message, send_message_and_set_status
 
 
 class TaskServicesTest(TestCase):
@@ -20,10 +22,9 @@ class TaskServicesTest(TestCase):
             end_time=timezone.now() + timezone.timedelta(hours=1),
             message_text="Test message"
         )
-        self.message = Message.objects.create(
-            client=self.client,
-            mailing=self.mailing,
-            status=Message.DELIVERY_IN_PROCESS
+        self.message = create_message(
+            client_id=self.client.pk,
+            mailing_id=self.mailing.pk
         )
 
     def test_create_message(self):

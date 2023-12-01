@@ -14,7 +14,7 @@ class ClientViewSet(ModelViewSet):
 class MailingViewSet(ModelViewSet):
     serializer_class = MailingSerializer
     queryset = Mailing.objects.all()
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     action_to_serializer = {
         "retrieve": MailingRetrieveSerializer,

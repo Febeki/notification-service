@@ -70,7 +70,10 @@ class MailingSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Check start time is lower than end time."""
-        if data['start_time'] >= data['end_time']:
+        start_time = data.get('start_time') or self.instance.start_time
+        end_time = data.get('end_time') or self.instance.end_time
+
+        if start_time >= end_time:
             raise serializers.ValidationError("start time must be lower than end time")
         return data
 
