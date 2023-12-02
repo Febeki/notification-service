@@ -6,9 +6,7 @@ variables:
 
 before_script:
   - apk add --no-cache bash
-  - bash ./docker/prod/backend/wait-for-it.sh
-  - docker-compose -f docker-compose-prod.yml build
-  - docker-compose -f docker-compose-prod.yml up -d
+  - docker-compose up --build
 
 test:
   stage: test
