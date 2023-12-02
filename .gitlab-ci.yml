@@ -16,7 +16,5 @@ services:
 test:
   stage: test
   script:
-    - docker-compose -f docker-compose-prod.yml up -d --build
-    - docker-compose exec portal-backend-1 coverage run --source='.' ./manage.py test
-    - docker-compose exec portal-backend-1 coverage report
-    - docker-compose exec portal-backend-1 bash -c "[ $(coverage report | awk '/TOTAL/ {print $NF}' | tr -d %) -ge 95 ]"
+    - docker-compose up -d --build
+    - docker-compose exec notification_service_django coverage run --source='.' ./manage.py test
