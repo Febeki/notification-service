@@ -1,0 +1,18 @@
+stages:
+  - test
+
+variables:
+  PYTHONPATH: "$CI_PROJECT_DIR/backend"
+
+before_script:
+  - apk add --no-cache bash
+  - bash ./docker/prod/backend/wait-for-it.sh
+  - docker-compose -f docker-compose-prod.yml build
+  - docker-compose -f docker-compose-prod.yml up -d
+
+test:
+  stage: test
+  script:
+    - docker exec portal-backend-1 coverage run --source='.' ./manage.py test
+    - docker exec portal-backend-1 coverage report
+    - docker exec portal-backend-1 bash -c "exit $(test $(coverage report | awk '/TOTAL/ {print $NF}' | tr -d %) -ge 95)"
