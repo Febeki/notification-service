@@ -1,16 +1,30 @@
+image: docker:stable
+services:
+  - docker:dind
+
 stages:
+  - build
   - test
+  - deploy
 
 variables:
-  PYTHONPATH: "$CI_PROJECT_DIR/backend"
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
 
 before_script:
-  - apt-get update -qy
-  - apt-get install -y python3 python3-pip docker-compose
-  - docker-compose -f docker-compose-prod.yml build
-  - docker-compose -f docker-compose-prod.yml up -d
+  - apk add --update py-pip &&
+      pip install docker-compose
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
-test:
+build:
+  stage: build
+  script:
+    - docker build -t registry.gitlab.com/your_username/your_project_name .
+    - docker push registry.gitlab.com/your_username/your_project_name
+  only:
+    - master
+
+deploy:
   stage: test
   script:
     - docker exec portal-backend-1 coverage run --source='.' ./manage.py test
