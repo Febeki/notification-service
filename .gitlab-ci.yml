@@ -16,4 +16,3 @@ test:
     - docker exec portal-backend-1 coverage run --source='.' ./manage.py test
     - docker exec portal-backend-1 coverage report
     - docker exec portal-backend-1 bash -c "exit $(test $(coverage report | awk '/TOTAL/ {print $NF}' | tr -d %) -ge 95)"
-    -
