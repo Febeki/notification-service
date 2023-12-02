@@ -16,5 +16,5 @@ before_script:
 test:
   stage: test
   script:
-    - docker-compose -f docker-compose.yml up -d --build
-    - docker-compose exec -it notification_service_django coverage run --source='.' ./manage.py test .
+    - docker compose -f docker-compose.yml up -d --build
+    - docker compose exec -it notification_service_django coverage run --source='.' ./manage.py test .
