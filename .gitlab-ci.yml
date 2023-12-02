@@ -13,8 +13,8 @@ before_script:
   - apk add --no-cache docker
   - docker info
 
-#test:
-#  stage: test
-#  script:
-#    - docker-compose -f docker-compose.yml up -d --build
-#    - docker-compose exec -it notification_service_django coverage run --source='.' ./manage.py test .
+test:
+  stage: test
+  script:
+    - docker-compose -f docker-compose.yml up -d --build
+    - docker-compose exec -it notification_service_django coverage run --source='.' ./manage.py test .
