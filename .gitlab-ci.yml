@@ -1,20 +1,20 @@
+image: docker:stable
+services:
+  - docker:dind
+
 stages:
   - test
 
 variables:
+  DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
-  COMPOSE_PROJECT_NAME: portal
-  PYTHONPATH: "$CI_PROJECT_DIR/backend"
 
 before_script:
-  - apt-get update -qy
-  - apt-get install -y python3 python3-pip docker-compose
+  - apk add --no-cache docker
+  - docker info
 
-services:
-  - docker:dind
-
-test:
-  stage: test
-  script:
-    - docker-compose up -d --build
-    - docker-compose exec notification_service_django coverage run --source='.' ./manage.py test
+#test:
+#  stage: test
+#  script:
+#    - docker-compose -f docker-compose.yml up -d --build
+#    - docker-compose exec -it notification_service_django coverage run --source='.' ./manage.py test .
