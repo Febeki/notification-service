@@ -12,9 +12,9 @@ test:
   stage: test
   script:
     - docker-compose up -d --build
-    - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
+    - docker-compose exec backend coverage run --source='.' ./manage.py test .
     - >
-      coverage_report=$(docker-compose exec backend coverage report | awk '/TOTAL/ {print $NF}' | tr -d %);
+      coverage_report=$(docker-compose exec backend sh -c "coverage report | awk '/TOTAL/ {print \$NF}' | tr -d %");
       if [ "$coverage_report" -ge 95 ]; then
         echo "Coverage is greater than or equal to 95%"
       else
