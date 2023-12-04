@@ -19,8 +19,8 @@ test:
 deploy:
   stage: deploy
   script:
-    - apt-get update -qy
-    - apt-get install -y openssh-client
+    - apk update -qy
+    - apk install -y openssh-client
     - mkdir -p ~/.ssh
     - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
