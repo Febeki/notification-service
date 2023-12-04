@@ -12,8 +12,4 @@ build:
   stage: build
   script:
     - docker-compose up -d --build
-
-test:
-  stage: test
-  script:
-    - docker ps
+    - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
