@@ -19,4 +19,7 @@ test:
 deploy:
   stage: deploy
   script:
-    - echo "Define your $PROJECT_PATH"
+    - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $HOST_VPS >> ~/.ssh/known_hosts
+    - ssh $USER_VPS@$HOST_VPS "ls /var/www/"
