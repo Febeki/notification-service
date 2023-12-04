@@ -19,8 +19,10 @@ test:
 deploy:
   stage: deploy
   script:
+    - apt-get update -qy
+    - apt-get install -y openssh-client
     - mkdir -p ~/.ssh
     - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H $HOST_VPS >> ~/.ssh/known_hosts
-    - ssh $USER_VPS@$HOST_VPS "ls $PROJECT_PATH"
+    - ssh -i ~/.ssh/id_rsa $USER_VPS@$HOST_VPS "ls /var/www/"
