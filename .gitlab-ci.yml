@@ -8,12 +8,20 @@ variables:
 services:
   - docker:dind
 
-build:
-  stage: build
+test:
+  stage: test
   script:
     - docker-compose up -d --build
     - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
+    - >
+      coverage_report=$(docker-compose exec backend coverage report | awk '/TOTAL/ {print $NF}' | tr -d %);
+      if [ "$coverage_report" -ge 95 ]; then
+        echo "Coverage is greater than or equal to 95%"
+      else
+        echo "Coverage is less than 95%"
+        exit 1
+      fi
 
-test:
-  stage: test
+deploy:
+  stage: deploy
   script: echo "Define your deployment script!"

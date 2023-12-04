@@ -16,4 +16,4 @@ class UserManagerTest(TestCase):
         user = User.objects.create_superuser(username='test', password='password1234')
         self.assertTrue(user.is_active)
         self.assertTrue(user.is_staff)
-        self.assertFalse(user.is_superuser)
+        self.assertTrue(user.is_superuser)
