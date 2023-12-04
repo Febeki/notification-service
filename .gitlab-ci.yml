@@ -13,3 +13,7 @@ build:
   script:
     - docker-compose up -d --build
     - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
+
+test:
+  stage: test
+  script: echo "Define your deployment script!"
