@@ -1,20 +1,20 @@
-image: docker:stable
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+
+# Official docker compose image.
+image:
+  name: docker/compose:latest
+
 services:
   - docker:dind
 
-stages:
-  - test
-
-variables:
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
-
 before_script:
-  - apk add --update py-pip &&
-    pip install docker-compose
+  - docker version
+  - docker-compose version
 
-test:
-  stage: test
+build:
+  stage: build
   script:
     - docker-compose up -d --build
     - docker-compose exec -it notification_service_django coverage run --source='.' ./manage.py test .
