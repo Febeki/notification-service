@@ -1,20 +1,19 @@
+image:
+  name: docker/compose:latest
+
 variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
 
-# Official docker compose image.
-image:
-  name: docker/compose:latest
-
 services:
   - docker:dind
-
-before_script:
-  - docker version
-  - docker-compose version
 
 build:
   stage: build
   script:
     - docker-compose up -d --build
+
+test:
+  stage: test
+  script:
     - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
