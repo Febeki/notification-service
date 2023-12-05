@@ -4,6 +4,7 @@ image:
 variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
+  HOST_VPS: "188.120.249.18"
 
 services:
   - docker:dind
