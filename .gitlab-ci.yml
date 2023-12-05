@@ -25,5 +25,5 @@ deploy:
     - echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H $HOST_VPS >> ~/.ssh/known_hosts
-    - rsync -az . $USER_VPS@$HOST_VPS:$PROJECT_PATH
-    - ssh $USER_VPS@$HOST_VPS "ls /var/www/notification-service"
+#    - rsync -az . $USER_VPS@$HOST_VPS:$PROJECT_PATH
+    - ssh $USER_VPS@$HOST_VPS "ls /var/www/notification-service/"
