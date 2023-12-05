@@ -24,5 +24,3 @@ deploy:
     - mkdir -p ~/.ssh
     - echo $PRIVATE_KEY | tr -d '\r' > ~/.ssh/id_rsa
     - cat ~/.ssh/id_rsa
-    - echo $PRIVATE_KEY
-    - echo $USER_VPS
