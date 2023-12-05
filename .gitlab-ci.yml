@@ -22,5 +22,6 @@ deploy:
     - apk update
     - apk add openssh-client
     - mkdir -p ~/.ssh
-    - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - echo $PRIVATE_KEY | tr -d '\r' > ~/.ssh/id_rsa
     - cat ~/.ssh/id_rsa
+    - echo $PRIVATE_KEY
