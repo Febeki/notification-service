@@ -20,7 +20,7 @@ deploy:
   stage: deploy
   script:
     - apk update
-    - apk add openssh-client
+    - apk add openssh-client rsync
     - mkdir -p ~/.ssh
     - echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
