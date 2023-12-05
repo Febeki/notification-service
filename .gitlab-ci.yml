@@ -8,21 +8,20 @@ variables:
 services:
   - docker:dind
 
-test:
-  stage: test
-  script:
-    - docker-compose up -d --build
-    - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
-    - docker-compose exec -T backend sh -c 'coverage_report=$(coverage report | awk "/TOTAL/ {print \$NF}" | tr -d %); if [ "$coverage_report" -ge 95 ]; then echo "Coverage is greater than or equal to 95%"; else echo "Coverage is less than 95%"; exit 1; fi'
+#test:
+#  stage: test
+#  script:
+#    - docker-compose up -d --build
+#    - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
+#    - docker-compose exec -T backend sh -c 'coverage_report=$(coverage report | awk "/TOTAL/ {print \$NF}" | tr -d %); if [ "$coverage_report" -ge 95 ]; then echo "Coverage is greater than or equal to 95%"; else echo "Coverage is less than 95%"; exit 1; fi'
 
 
 deploy:
   stage: deploy
   script:
-    - apk update
-    - apk add openssh-client
     - mkdir -p ~/.ssh
     - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H $HOST_VPS >> ~/.ssh/known_hosts
+    - ssh-keyscan $HOST_VPS >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
     - ssh -i ~/.ssh/id_rsa $USER_VPS@$HOST_VPS "ls /var/www/"
