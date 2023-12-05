@@ -4,7 +4,6 @@ image:
 variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
-  HOST_VPS: "188.120.249.18"
 
 services:
   - docker:dind
@@ -24,4 +23,4 @@ deploy:
     - apk add openssh-client
     - mkdir -p ~/.ssh
     - echo $PRIVATE_KEY | tr -d '\r' > ~/.ssh/id_rsa
-    - ssh $USER_VPS@$HOST_VPS
+    - echo $HOST_VPS
