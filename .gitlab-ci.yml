@@ -23,6 +23,4 @@ deploy:
     - apk add openssh-client
     - mkdir -p ~/.ssh
     - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan $HOST_VPS | tee -a ~/.ssh/known_hosts
-    - ssh -i ~/.ssh/id_rsa $USER_VPS@$HOST_VPS "ls /var/www/"
+    - echo $HOST_VPS
