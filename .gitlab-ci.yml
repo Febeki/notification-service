@@ -8,12 +8,12 @@ variables:
 services:
   - docker:dind
 
-#test:
-#  stage: test
-#  script:
-#    - docker-compose up -d --build
-#    - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
-#    - docker-compose exec -T backend sh -c 'coverage_report=$(coverage report | awk "/TOTAL/ {print \$NF}" | tr -d %); if [ "$coverage_report" -ge 95 ]; then echo "Coverage is greater than or equal to 95%"; else echo "Coverage is less than 95%"; exit 1; fi'
+test:
+  stage: test
+  script:
+    - docker-compose up -d --build
+    - docker-compose exec -T backend coverage run --source='.' ./manage.py test .
+    - docker-compose exec -T backend sh -c 'coverage_report=$(coverage report | awk "/TOTAL/ {print \$NF}" | tr -d %); if [ "$coverage_report" -ge 95 ]; then echo "Coverage is greater than or equal to 95%"; else echo "Coverage is less than 95%"; exit 1; fi'
 
 
 deploy:
@@ -25,5 +25,5 @@ deploy:
     - echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H $HOST_VPS >> ~/.ssh/known_hosts
-    - ssh $USER_VPS@$HOST_VPS "ls /var/www/"
-    - ls
+    - rsync -az . $USER_VPS@$HOST_VPS:$PROJECT_PATH
+    - ssh $USER_VPS@$HOST_VPS "cd $PROJECT_PATH && docker compose up -d --build"
