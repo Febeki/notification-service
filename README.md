@@ -1,6 +1,4 @@
-# Notification Service
-
-stack: Django, DRF, React.js, Nginx, Celery, Gitlab-ci, Unittests (100% coverage), Docker
+# Notification Service (Django, DRF, React.js, Nginx, Celery, Gitlab-ci, Unittests (100% coverage), Docker)
 
 ### Getting Started:
 
