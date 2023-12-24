@@ -8,7 +8,7 @@ from main.tasks import send_message_to_client
 from main.utils import time_to_send_message
 
 
-def create_celery_tasks_to_send_messages_to_clients(clients: QuerySet[Client], instance: Mailing) -> str:
+def create_celery_tasks_to_send_messages_to_clients(clients: QuerySet[Client], instance: Mailing) -> list:
     """Create celery tasks and return task ids"""
     task_ids = []
 
@@ -23,7 +23,6 @@ def create_celery_tasks_to_send_messages_to_clients(clients: QuerySet[Client], i
             task = send_message_to_client.apply_async(args=[cl.pk, instance.pk], eta=start_function_at)
             task_ids.append(task.id)
 
-    task_ids = ",".join(task_ids)
     return task_ids
 
 
@@ -38,9 +37,8 @@ def get_clients_by_filter(client_filter: Optional[str]) -> QuerySet[Client]:
     return clients
 
 
-def revoke_celery_tasks_by_ids(task_ids: Optional[str]) -> None:
+def revoke_celery_tasks_by_ids(task_ids: list[str]) -> None:
     """Revoke celery tasks by task_ids"""
-    task_ids = task_ids.split(",") if task_ids else []
 
     for task_id in task_ids:
         AsyncResult(task_id).revoke(terminate=True)

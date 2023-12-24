@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 from .managers import UserManager
 
@@ -26,7 +27,7 @@ class Mailing(models.Model):
     end_time = models.DateTimeField()
     message_text = models.TextField()
     client_filter = models.CharField(max_length=150, null=True, blank=True)
-    task_ids = models.TextField(blank=True, null=True)
+    task_ids = ArrayField(models.CharField(max_length=36), default=list)
 
     def __str__(self):
         return f"Mailing {self.pk}"

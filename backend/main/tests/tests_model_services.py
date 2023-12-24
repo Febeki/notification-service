@@ -49,7 +49,7 @@ class ModelServicesTest(TestCase):
         mock_apply_async.side_effect = lambda args, eta: Mock(id=fake_task_ids.pop(0))
         task_ids = create_celery_tasks_to_send_messages_to_clients(Client.objects.all(), self.mailing)
 
-        self.assertEqual(task_ids, "1,2")
+        self.assertEqual(task_ids, ["1", "2"])
 
     def test_get_clients_by_filter_with_filter(self):
         client_filter = 'tag1 123'
