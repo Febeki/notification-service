@@ -6,14 +6,14 @@ User = get_user_model()
 
 class UserManagerTest(TestCase):
     def test_create_user(self):
-        user = User.objects.create_user(username='test', password='password1234', first_name='Test')
+        user = User.objects.create_user(email='test@gmail.com', password='password1234', first_name='Test')
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
-        self.assertEqual(str(user), 'test')
+        self.assertEqual(str(user), 'test@gmail.com')
 
     def test_create_super_user(self):
-        user = User.objects.create_superuser(username='test', password='password1234')
+        user = User.objects.create_superuser(email='test@gmail.com', password='password1234')
         self.assertTrue(user.is_active)
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)

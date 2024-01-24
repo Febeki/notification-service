@@ -11,7 +11,7 @@
 
 - `docker-compose up --build` - run the project
 
-- go to http://127.0.0.1:3000/login/   to see Web UI. username: admin, password: 1
+- go to http://127.0.0.1:3000/login/   to see Web UI. email: admin@gmail.com, password: 1
 
 ### Populate the Database with Test Data:
 
@@ -28,7 +28,7 @@ Create 6 clients with different time zones for testing
 `.backend.env`:
 - JWT_TOKEN - your jwt token for External service API (https://probe.fbrq.cloud/docs)
 
-- SUPERUSER_USERNAME and SUPERUSER_PASSWORD - it will automatically create django admin superuser
+- SUPERUSER_EMAIL and SUPERUSER_PASSWORD - it will automatically create django admin superuser
 
 ```env
 SECRET_KEY=ly+oy=jqkhq=roqerh++ob=nripq-hroir-bqoasp
@@ -41,7 +41,7 @@ SQL_ENGINE=django.db.backends.postgresql
 
 JWT_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAzMDQwMTQsImlzcyI6ImZhYnJpcXVlIiwibmFtZSI6Imh0dHBzOi8vdC5tZS9EZW5fZ3Vkb2sifQ.NjlSPKYqR6KFuJ9DtmnKf-EgDmZSk6Q29YgHB3EQBm8
 
-SUPERUSER_USERNAME=admin
+SUPERUSER_EMAIL=admin@gmail.com
 SUPERUSER_PASSWORD=1
 ```
 

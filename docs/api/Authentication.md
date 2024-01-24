@@ -6,7 +6,7 @@
 - **Method**: POST
 - **Description**: Obtain a JSON Web Token for authentication.
 - **Parameters**:
-  - `username` **required**: (string) User's username.
+  - `email` **required**: (string) User's email.
   - `password` **required**: (string) User's password.
 
 #### Refresh Token

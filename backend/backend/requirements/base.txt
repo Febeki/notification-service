@@ -10,3 +10,4 @@ pytz==2023.3.post1
 drf-spectacular==0.26.2
 djangorestframework-simplejwt==5.2.2
 coverage==7.3.2
+social-auth-app-django==5.4.0

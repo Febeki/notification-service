@@ -230,14 +230,14 @@ class MyTokenObtainPairSerializerTest(APITestCase):
         self.user = self.create_user()
 
     @staticmethod
-    def create_user(username="testuser", password="testpassword"):
-        return User.objects.create_user(username=username, password=password)
+    def create_user(email="testuser@gmail.com", password="testpassword"):
+        return User.objects.create_user(email=email, password=password)
 
     def test_obtain_token_with_is_staff(self):
         response = self.client.post(
             "/api/token/",
             data={
-                "username": "testuser",
+                "email": "testuser@gmail.com",
                 "password": "testpassword",
             },
             format="json"

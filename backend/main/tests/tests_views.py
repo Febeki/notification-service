@@ -16,7 +16,7 @@ server_tz = timezone.get_current_timezone()
 
 class ClientAPITestCase(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(email='testuser@gmail.com', password='testpassword')
 
         self.test_client = Client.objects.create(phone_number='72345678901', mobile_operator_code='123', tag='testtag1',
                                                  timezone='UTC')
@@ -63,7 +63,7 @@ class ClientAPITestCase(APITestCase):
 
 class MailingAPITestCase(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(email='testuser@gmail.com', password='testpassword')
 
         self.mailing1 = Mailing.objects.create(start_time=datetime.now(server_tz),
                                                end_time=datetime.now(server_tz) + timedelta(days=1),

@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+import social_django.urls
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include("auth_app.urls")),
+    path('social-auth/', include('social_django.urls')),
     path('api/', include("main.urls")),
-    path('api/', include("auth_app.urls")),
     path("docs/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "docs/",

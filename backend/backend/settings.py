@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     'drf_spectacular',
+    'social_django',
 ]
 
 LOCAL_APPS = [
@@ -52,6 +53,11 @@ LOCAL_APPS = [
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS + LOCAL_APPS
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -62,6 +68,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+
+    'auth_app.middleware.JWTAuthMiddleware'
 ]
 
 REST_FRAMEWORK = {
@@ -84,6 +93,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
             ],
         },
     },
@@ -145,10 +155,35 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 SPECTACULAR_SETTINGS = {
     "TITLE": "Project API documentation",
     "DESCRIPTION": "Documentation for project api points",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
+
+# OAUTH2
+
+# LOGIN_REDIRECT_URL = os.environ.get("LOGIN_REDIRECT_URL")
+LOGIN_REDIRECT_URL = 'http://localhost:8000/complete/google-oauth2/'
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
+SOCIAL_AUTH_PIPELINE = (
+    "social_core.pipeline.social_auth.social_details",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "social_core.pipeline.social_auth.social_user",
+
+    "auth_app.pipeline.associate_by_email",
+
+    "social_core.pipeline.user.create_user",
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+
+)
+
+import social_core.pipeline.social_auth

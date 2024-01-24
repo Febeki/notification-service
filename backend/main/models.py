@@ -6,10 +6,15 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD: str = "email"
+    REQUIRED_FIELDS: list[str] = []
+
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.username}"
+        return f"{self.email}"
 
 
 class Client(models.Model):

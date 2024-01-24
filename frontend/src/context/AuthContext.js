@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-import { ROOT_API_URL, URLs } from "../config/constants";
+import { BACKEND_URL, URLs } from "../config/constants";
 
 const AuthContext = createContext();
 
@@ -27,17 +27,18 @@ export const AuthProvider = ({ children }) => {
   let loginUser = async (e) => {
     e.preventDefault();
     await axios
-      .post(`${ROOT_API_URL}${URLs.TOKEN}`, {
-        username: e.target.username.value,
+      .post(`${BACKEND_URL}${URLs.TOKEN}`, {
+        email: e.target.email.value,
         password: e.target.password.value,
       })
       .then((response) => {
         let data = response.data;
-
         setAuthTokens(data);
         const decodedUser = jwtDecode(data.access);
+        console.log(decodedUser)
         setUser(decodedUser);
         localStorage.setItem("authTokens", JSON.stringify(data));
+        console.log(authTokens)
         if (decodedUser.is_staff) {
           navigate("/");
         }

@@ -13,12 +13,15 @@ import NewClient from "../screens/client/ClientCreatePage.js";
 import LoginPage from "../screens/LoginPage.js";
 import PrivateRoute from "../routers/PrivateRoute.js";
 
+import GoogleAuthCallback from "../../services/GoogleAuthCallback.js";
+
 function Router() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/google-auth-callback" element={<GoogleAuthCallback />} />
           <Route
             path="/clients"
             element={
