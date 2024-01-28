@@ -1,7 +1,6 @@
 import os
 
 import requests
-
 from main.models import Client, Mailing, Message
 
 

@@ -3,11 +3,10 @@ from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework import status
-from rest_framework.test import APITestCase
-
 from main.models import Client, Mailing
 from main.serializers import ClientSerializer, MailingSerializer
+from rest_framework import status
+from rest_framework.test import APITestCase
 
 User = get_user_model()
 

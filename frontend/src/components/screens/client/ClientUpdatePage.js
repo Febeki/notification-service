@@ -27,6 +27,8 @@ const ClientUpdatePage = () => {
       }
     } catch (error) {
       console.error("Error fetching client details:", error);
+      if (error.response && error.response.status === 401)
+        navigate("/login");
     }
   };
 

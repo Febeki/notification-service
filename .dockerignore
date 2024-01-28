@@ -1,0 +1,9 @@
+.git
+.cache
+.ash_history
+.coverage
+.vscode
+.idea
+venv
+__pycache__
+node_modules

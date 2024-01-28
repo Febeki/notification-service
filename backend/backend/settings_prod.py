@@ -1,19 +1,13 @@
 from .settings import *
-from .settings import REST_FRAMEWORK, USE_HTTPS
+from .settings import USE_HTTPS
 
-CORS_ALLOWED_ORIGINS = [
-    "http://domain.com",
-    "http://*.domain.com",
-]
+CORS_ALLOWED_ORIGINS = ["http://" + i for i in ALLOWED_HOSTS]
 
 X_FRAME_OPTIONS = "DENY"
 
 
 if USE_HTTPS:
-    CORS_ALLOWED_ORIGINS += [
-        "https://domain.com",
-        "https://*.domain.com",
-    ]
+    CORS_ALLOWED_ORIGINS += ["https://" + i for i in ALLOWED_HOSTS]
 
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useAxios from "../../../services/useAxios";
 
 import { URLs } from "../../../config/constants";
@@ -6,6 +7,7 @@ import { URLs } from "../../../config/constants";
 import { Link } from "react-router-dom";
 
 const ClientsPage = () => {
+  const navigate = useNavigate();
   const [clients, setClients] = useState([]);
   const api = useAxios();
 
@@ -23,6 +25,8 @@ const ClientsPage = () => {
       })
       .catch((error) => {
         console.error("Error fetching clients:", error);
+        if (error.response && error.response.status === 401)
+          navigate("/login");
       });
   };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAxios from "../../../services/useAxios";
-
+import { useNavigate } from "react-router-dom";
 import { URLs } from "../../../config/constants";
 
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const MailingPage = () => {
   const [mailing, setMailing] = useState([]);
   const api = useAxios();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMailing();
@@ -23,6 +24,8 @@ const MailingPage = () => {
       })
       .catch((error) => {
         console.error("Error fetching mailing:", error);
+        if (error.response && error.response.status === 401)
+          navigate("/login");
       });
   };
 

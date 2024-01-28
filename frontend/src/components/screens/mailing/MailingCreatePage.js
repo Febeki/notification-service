@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import useAxios from "../../../services/useAxios";
 import { URLs } from "../../../config/constants";
 import { useNavigate } from "react-router-dom";
-
+import AuthContext from "../../../context/AuthContext";
 import { Form, Button } from "react-bootstrap";
 
 const NewMailing = () => {
   const api = useAxios();
   const navigate = useNavigate();
   const [mailingData, setMailingData] = useState({});
+  const { checkUserLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    checkUserLoggedIn();
+  }, [checkUserLoggedIn]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

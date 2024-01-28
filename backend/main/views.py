@@ -2,7 +2,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Client, Mailing
-from .serializers import ClientSerializer, MailingRetrieveSerializer, MailingSerializer
+from .serializers import (ClientSerializer, MailingRetrieveSerializer,
+                          MailingSerializer)
 
 
 class ClientViewSet(ModelViewSet):

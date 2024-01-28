@@ -1,7 +1,30 @@
-from django.http import JsonResponse
-from django.shortcuts import redirect
+import os
 
+from django.http import HttpResponseRedirect
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from .services import response_with_tokens_in_cookies
+
+
+class CheckAuth(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"isAuthenticated": True})
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            access_token = response.data["access"]
+            refresh_token = response.data["refresh"]
+
+            response = response_with_tokens_in_cookies(response, access_token, refresh_token)
+        return response
 
 
 class GoogleCompleteView(APIView):
@@ -9,11 +32,7 @@ class GoogleCompleteView(APIView):
         access_token = request.session.get('access_token')
         refresh_token = request.session.get('refresh_token')
 
+        response = HttpResponseRedirect(os.environ.get("OAUTH_REDIRECT_URL"))
         if access_token and refresh_token:
-            # Перенаправляем на фронтенд с токенами в URL
-            frontend_url = f"http://localhost:3000/google-auth-callback?access_token={access_token}&refresh_token={refresh_token}"
-            return redirect(frontend_url)
-        else:
-            # Если токены не найдены, отправляем сообщение об ошибке
-            return JsonResponse({'error': 'Authentication failed'}, status=401)
-
+            response = response_with_tokens_in_cookies(response, access_token, refresh_token)
+        return response

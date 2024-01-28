@@ -1,27 +1,11 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
-
 import { BACKEND_URL, URLs } from "../config/constants";
 
 const AuthContext = createContext();
 
-export default AuthContext;
-
 export const AuthProvider = ({ children }) => {
-  let [authTokens, setAuthTokens] = useState(() =>
-    localStorage.getItem("authTokens")
-      ? JSON.parse(localStorage.getItem("authTokens"))
-      : null
-  );
-  let [user, setUser] = useState(() =>
-    localStorage.getItem("authTokens")
-      ? jwtDecode(localStorage.getItem("authTokens"))
-      : null
-  );
-  let [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
 
   let loginUser = async (e) => {
@@ -30,50 +14,35 @@ export const AuthProvider = ({ children }) => {
       .post(`${BACKEND_URL}${URLs.TOKEN}`, {
         email: e.target.email.value,
         password: e.target.password.value,
-      })
+      }, { withCredentials: true } )
       .then((response) => {
-        let data = response.data;
-        setAuthTokens(data);
-        const decodedUser = jwtDecode(data.access);
-        console.log(decodedUser)
-        setUser(decodedUser);
-        localStorage.setItem("authTokens", JSON.stringify(data));
-        console.log(authTokens)
-        if (decodedUser.is_staff) {
-          navigate("/");
-        }
-      })
+        navigate("/");
+        })
       .catch((error) => {
         alert("Неправильные данные!");
       });
   };
 
-  let logoutUser = () => {
-    setAuthTokens(null);
-    setUser(null);
-    localStorage.removeItem("authTokens");
-    navigate("/login");
+  const checkUserLoggedIn = async () => {
+    try {
+      await axios.get(`${BACKEND_URL}${URLs.CHECK_AUTH}`, { withCredentials: true });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        navigate("/login");
+      }
+    }
   };
 
   let contextData = {
-    user: user,
-    setUser: setUser,
-    authTokens: authTokens,
-    setAuthTokens: setAuthTokens,
-    loginUser: loginUser,
-    logoutUser: logoutUser,
+    loginUser,
+    checkUserLoggedIn,
   };
-
-  useEffect(() => {
-    if (authTokens) {
-      setUser(jwtDecode(authTokens.access));
-    }
-    setLoading(false);
-  }, [authTokens, loading]);
 
   return (
     <AuthContext.Provider value={contextData}>
-      {loading ? null : children}
+      {children}
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext;

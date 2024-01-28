@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import useAxios from "../../../services/useAxios";
+import { useNavigate } from "react-router-dom";
 import { URLs } from "../../../config/constants";
 import { useParams } from "react-router-dom";
 
 const MailinginfoPage = () => {
   const { id } = useParams();
   const api = useAxios();
+  const navigate = useNavigate();
   const [mailingData, setMailingData] = useState({});
 
   useEffect(() => {
@@ -20,6 +22,8 @@ const MailinginfoPage = () => {
       }
     } catch (error) {
       console.error("Error fetching mailing details:", error);
+      if (error.response && error.response.status === 401)
+        navigate("/login");
     }
   };
 

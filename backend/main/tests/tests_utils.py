@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 from django.test import TestCase
 from django.utils import timezone
-
 from main.utils import time_to_send_message
 
 

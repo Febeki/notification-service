@@ -3,9 +3,9 @@ from unittest.mock import patch
 import requests
 from django.test import TestCase, override_settings
 from django.utils import timezone
-
 from main.models import Client, Mailing, Message
-from main.services.task_services import create_message, send_message_and_set_status
+from main.services.task_services import (create_message,
+                                         send_message_and_set_status)
 
 
 class TaskServicesTest(TestCase):

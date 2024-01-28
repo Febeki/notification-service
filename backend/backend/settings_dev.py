@@ -1,7 +1,11 @@
 from .settings import *
 from .settings import INSTALLED_APPS, INTERNAL_IPS, MIDDLEWARE
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 if ENABLE_DEBUG_TOOLBAR:
     from socket import gethostbyname_ex, gethostname

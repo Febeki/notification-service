@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
 
-    'auth_app.middleware.JWTAuthMiddleware'
+    'auth_app.middleware.JWTAuthMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -164,9 +164,9 @@ SPECTACULAR_SETTINGS = {
 
 # OAUTH2
 
-# LOGIN_REDIRECT_URL = os.environ.get("LOGIN_REDIRECT_URL")
-LOGIN_REDIRECT_URL = 'http://localhost:8000/complete/google-oauth2/'
+LOGIN_REDIRECT_URL = '/api/complete/google-oauth2/'
 
+SOCIAL_AUTH_UNIQUE_EMAIL = True
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
@@ -176,14 +176,8 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.social_uid",
     "social_core.pipeline.social_auth.auth_allowed",
     "social_core.pipeline.social_auth.social_user",
-
     "auth_app.pipeline.associate_by_email",
-
-    "social_core.pipeline.user.create_user",
     "social_core.pipeline.social_auth.associate_user",
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
-
 )
-
-import social_core.pipeline.social_auth
