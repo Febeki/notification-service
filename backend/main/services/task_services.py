@@ -1,10 +1,11 @@
 import os
 
 import requests
+
 from main.models import Client, Mailing, Message
 
 
-def _send_message_to_external_api(msg: dict) -> int:
+def _send_message_to_external_api(msg: dict) -> int:  # pragma: no cover
     """send message to external api and return response status code"""
     response = requests.post(f'https://probe.fbrq.cloud/v1/send/{msg["id"]}',
                              json=msg,

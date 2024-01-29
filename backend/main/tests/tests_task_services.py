@@ -3,14 +3,17 @@ from unittest.mock import patch
 import requests
 from django.test import TestCase, override_settings
 from django.utils import timezone
+
 from main.models import Client, Mailing, Message
-from main.services.task_services import (create_message,
-                                         send_message_and_set_status)
+from main.services.task_services import create_message, send_message_and_set_status
 
 
 class TaskServicesTest(TestCase):
     @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
-    def setUp(self):
+    @patch('main.services.task_services._send_message_to_external_api')
+    def setUp(self, mock_send_message):
+        mock_send_message.return_value = 200
+
         self.client = Client.objects.create(
             phone_number="79991234567",
             mobile_operator_code="123",

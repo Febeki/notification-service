@@ -1,12 +1,14 @@
+from unittest.mock import patch
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.utils import timezone
-from main.models import Client, Mailing, Message
-from main.serializers import (ClientSerializer, MailingRetrieveSerializer,
-                              MailingSerializer, MessageSerializer)
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.test import APITestCase
+
+from main.models import Client, Mailing, Message
+from main.serializers import ClientSerializer, MailingRetrieveSerializer, MailingSerializer, MessageSerializer
 
 User = get_user_model()
 
@@ -159,7 +161,10 @@ class MailingSerializerTest(TestCase):
 
 class MessageSerializerTest(TestCase):
     @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
-    def setUp(self):
+    @patch('main.services.task_services._send_message_to_external_api')
+    def setUp(self, mock_send_message):
+        mock_send_message.return_value = 200
+
         self.client = Client.objects.create(
             phone_number="79991234567",
             mobile_operator_code="123",

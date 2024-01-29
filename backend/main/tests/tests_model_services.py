@@ -2,10 +2,13 @@ from unittest.mock import Mock, call, patch
 
 from django.test import TestCase, override_settings
 from django.utils import timezone
+
 from main.models import Client, Mailing, Message
 from main.services.model_services import (
-    create_celery_tasks_to_send_messages_to_clients, get_clients_by_filter,
-    revoke_celery_tasks_by_ids)
+    create_celery_tasks_to_send_messages_to_clients,
+    get_clients_by_filter,
+    revoke_celery_tasks_by_ids,
+)
 
 
 class ModelServicesTest(TestCase):

@@ -2,6 +2,7 @@ from typing import Optional
 
 from celery.result import AsyncResult
 from django.db.models import QuerySet
+
 from main.models import Client, Mailing
 from main.tasks import send_message_to_client
 from main.utils import time_to_send_message
