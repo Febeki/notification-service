@@ -1,4 +1,4 @@
-# Notification Service (Django, DRF, React.js, Nginx, Celery, Gitlab-ci, Unittests (100% coverage), Docker)
+# Notification Service (Django, DRF, React.js, Nginx, Celery, Gitlab-ci, Unittests (100% coverage), Docker, Oauth2)
 
 ### Getting Started:
 
@@ -31,11 +31,14 @@ Create 6 clients with different time zones for testing
 - SUPERUSER_EMAIL and SUPERUSER_PASSWORD - it will automatically create django admin superuser
 
 ```env
-SECRET_KEY=ly+oy=jqkhq=roqerh++ob=nripq-hroir-bqoasp
+SECRET_KEY=ly+oy=jqkhq=roqerh++ob=nripq-hroir-bqqfk
 DEBUG=1
 DJANGO_ALLOWED_HOSTS=*
 
+DJANGO_SETTINGS_MODULE=backend.settings_dev
+
 ENABLE_DEBUG_TOOLBAR=1
+
 
 SQL_ENGINE=django.db.backends.postgresql
 
@@ -43,6 +46,10 @@ JWT_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAzMDQwMTQsImlzcyI6I
 
 SUPERUSER_EMAIL=admin@gmail.com
 SUPERUSER_PASSWORD=1
+
+OAUTH_REDIRECT_URL=http://localhost:3000/
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=YOUR_KEY_GOOGLE
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=YOUR_SECRET_GOOGLE
 ```
 
 `.db.env`:
@@ -57,17 +64,10 @@ POSTGRES_PASSWORD=12345
 
 `.frontend.env`:
 
-- REACT_APP_API_URL - your domain name + /api/.
+- REACT_APP_BACKEND_URL - your domain name.
 
 - example for produciton: `https://domain.com/api/`
 
 ```env
-REACT_APP_API_URL=http://127.0.0.1:8000/api/
+REACT_APP_BACKEND_URL=http://127.0.0.1:8000/
 ```
-
-### Additional Tasks:
-
-- add testing
-- Docker compose for start all services with 1 command
-- add Swagger UI. path /docs/
-- Add Web UI
