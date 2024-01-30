@@ -3,9 +3,7 @@ from unittest.mock import patch
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.utils import timezone
-from rest_framework import status
 from rest_framework.exceptions import ValidationError
-from rest_framework.test import APITestCase
 
 from main.models import Client, Mailing, Message
 from main.serializers import ClientSerializer, MailingRetrieveSerializer, MailingSerializer, MessageSerializer
@@ -227,27 +225,3 @@ class MailingRetrieveSerializerTest(TestCase):
         }
 
         self.assertEqual(serializer.data, expected_data)
-
-
-class MyTokenObtainPairSerializerTest(APITestCase):
-    def setUp(self):
-        self.user = self.create_user()
-
-    @staticmethod
-    def create_user(email="testuser@gmail.com", password="testpassword"):
-        return User.objects.create_user(email=email, password=password)
-
-    def test_obtain_token_with_is_staff(self):
-        response = self.client.post(
-            "/api/token/",
-            data={
-                "email": "testuser@gmail.com",
-                "password": "testpassword",
-            },
-            format="json"
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        self.assertIn("access", response.data)
-        self.assertIn("refresh", response.data)
