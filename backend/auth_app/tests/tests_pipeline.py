@@ -1,8 +1,9 @@
-from django.test import TestCase
 from unittest.mock import MagicMock, patch
-from auth_app.pipeline import associate_by_email
-from django.contrib.auth import get_user_model
 
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+
+from auth_app.pipeline import associate_by_email
 
 User = get_user_model()
 

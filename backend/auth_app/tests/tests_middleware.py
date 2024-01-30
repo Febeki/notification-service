@@ -1,7 +1,7 @@
-from django.test import TestCase
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from django.http import HttpRequest
+from django.test import TestCase
 
 from auth_app.middleware import JWTAuthMiddleware
 

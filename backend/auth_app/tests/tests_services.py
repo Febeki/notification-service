@@ -1,8 +1,10 @@
+from unittest.mock import MagicMock, patch
+
 from django.http import HttpResponse
-from django.test import TestCase, RequestFactory
-from unittest.mock import patch, MagicMock
-from auth_app.services import validated_response, response_with_tokens_in_cookies, response_without_tokens
+from django.test import RequestFactory, TestCase
 from rest_framework_simplejwt.exceptions import TokenError
+
+from auth_app.services import response_with_tokens_in_cookies, response_without_tokens, validated_response
 
 
 class TestValidatedResponse(TestCase):
